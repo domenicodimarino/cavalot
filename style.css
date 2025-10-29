@@ -1,0 +1,31 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    position: relative; /* Necessario per posizionare le immagini sovrapposte */
+}
+
+#pergamena, #immagineFinale {
+    width: 300px; /* O la dimensione che preferisci */
+    position: absolute; /* Per sovrapporre le immagini */
+    transition: opacity 1s ease-in-out; /* Durata del fade (1 secondo) */
+}
+
+#pergamena {
+    cursor: pointer;
+}
+
+/* Classe per nascondere un elemento */
+.hidden {
+    opacity: 0;
+    pointer-events: none; /* Rende l'elemento non cliccabile quando nascosto */
+}
+
+/* Classe per mostrare un elemento */
+.visible {
+    opacity: 1;
+    pointer-events: auto; /* Rende l'elemento cliccabile quando visibile */
+}

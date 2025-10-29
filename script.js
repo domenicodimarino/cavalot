@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     isAnimating = false; // Reset dello stato di animazione
                 }, fadeDuration); // Aspetta che il fade out sia completo
             }
-        }, 500); // Velocità di cambio frame (regola come preferisci)
+        }, 1000); // Velocità di cambio frame (regola come preferisci)
     });
 
     // Assicurati che la pergamena sia visibile all'inizio

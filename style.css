@@ -1,31 +1,117 @@
+/* Aggiungi questa nuova regola all'inizio del tuo CSS */
+html {
+    background-color: #0c3c2f; /* Un verde scuro preso dal tuo sfondo */
+}
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    
+    /* --- MODIFICA CHIAVE --- */
+    min-height: 100vh; /* Fallback per browser vecchi */
+    min-height: 100svh; /* Soluzione moderna per mobile */
+    
     margin: 0;
-    background-color: #f0f0f0;
-    position: relative; /* Necessario per posizionare le immagini sovrapposte */
+    position: relative;
+    overflow: hidden;
+
+    /* --- MODIFICA CHIAVE --- */
+    /* Colore di base *dietro* l'immagine di sfondo */
+    background-color: #0c3c2f; 
+
+    /* Stile per lo sfondo medievale (invariato) */
+    background-image: url('images/sfondo_medievale.jpg');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+    
+    color: #e0d0b0; 
+    font-family: 'Georgia', serif;
+    text-align: center;
+}
+/* * NUOVO: Stile base per i box di testo
+ * (Ho rinominato .message-container in .message-style)
+*/
+.message-style {
+    z-index: 10;
+    padding: 15px 30px; /* Un po' meno padding per mobile */
+    background-color: rgba(0, 0, 0, 0.7); /* Leggermente più scuro */
+    border: 2px solid #8B4513;
+    border-radius: 10px;
+    max-width: 90%; /* Più stretto per adattarsi a tutti gli schermi */
+    box-shadow: 0 0 15px rgba(0,0,0,0.8);
+    transition: opacity 1s ease-in-out;
+    text-align: center;
+    /* Rimosso position: absolute da qui */
 }
 
+/* * NUOVO: Posizionamento per il box superiore
+*/
+#introMessageTop {
+    position: absolute;
+    top: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* * NUOVO: Posizionamento per il box inferiore
+*/
+#introMessageBottom {
+    position: absolute;
+    bottom: 5vh; /* 10% dal basso dello schermo */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.message-style h1 {
+    font-size: 2em; /* Leggermente più piccolo per mobile */
+    margin-bottom: 10px;
+    color: #FFD700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}
+
+.message-style p {
+    font-size: 1.1em; /* Leggermente più piccolo per mobile */
+    line-height: 1.5;
+}
+
+/* * MODIFICATO: Centratura esplicita per pergamena e img finale
+*/
 #pergamena, #immagineFinale {
-    width: 300px; /* O la dimensione che preferisci */
-    position: absolute; /* Per sovrapporre le immagini */
-    transition: opacity 1s ease-in-out; /* Durata del fade (1 secondo) */
+    position: absolute;
+    /* Centratura esplicita per elementi absolute */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    
+    transition: opacity 1s ease-in-out;
+    max-width: 90vw;
+    height: auto;
+    z-index: 5;
 }
 
+/* * MODIFICATO: Dimensione reattiva per la pergamena
+*/
 #pergamena {
+    width: 60%; /* Reattiva, ma... */
+    max-width: 300px; /* ...non più grande di 300px */
     cursor: pointer;
 }
 
-/* Classe per nascondere un elemento */
-.hidden {
-    opacity: 0;
-    pointer-events: none; /* Rende l'elemento non cliccabile quando nascosto */
+#immagineFinale {
+    max-height: 90vh;
+    object-fit: contain;
 }
 
-/* Classe per mostrare un elemento */
+/* Questi rimangono invariati */
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
 .visible {
     opacity: 1;
-    pointer-events: auto; /* Rende l'elemento cliccabile quando visibile */
+    pointer-events: auto;
 }

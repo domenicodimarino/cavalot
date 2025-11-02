@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const pergamena = document.getElementById('pergamena');
-    const immagineFinale = document.getElementById('immagineFinale'); // Ottieni il riferimento all'immagine finale
+    const immagineFinale = document.getElementById('immagineFinale');
+    const introMessageTop = document.getElementById('introMessageTop');
+    const introMessageBottom = document.getElementById('introMessageBottom');
 
     const frames = [
         'images/pergamena1.png',
@@ -9,44 +11,61 @@ document.addEventListener('DOMContentLoaded', () => {
         'images/pergamena4.png'
     ];
     let currentFrameIndex = 0;
-    let isAnimating = false; // Per evitare click multipli durante l'animazione
-    const fadeDuration = 1000; // Durata del fade in millisecondi (deve corrispondere al CSS)
+    let isAnimating = false;
+    const fadeDuration = 1000; 
 
-    pergamena.addEventListener('click', () => {
+    // --- NUOVA FUNZIONE ---
+    // Abbiamo spostato tutta la logica del click qui
+    function startAnimation() {
         if (isAnimating || currentFrameIndex === frames.length - 1) {
-            // Se l'animazione è già in corso O la pergamena è già completamente srotolata, ignora il click
             return;
         }
 
         isAnimating = true;
-        let animationStep = 0;
-        const animationInterval = setInterval(() => {
-            animationStep++;
-            if (currentFrameIndex + animationStep < frames.length) {
-                // Continua con l'animazione dei frame
-                pergamena.src = frames[currentFrameIndex + animationStep];
-            } else {
-                // Animazione frame terminata, ora gestiamo il fade
-                clearInterval(animationInterval);
-                currentFrameIndex = frames.length - 1; // Assicurati che l'indice sia l'ultimo frame
 
-                // 1. Fade out della pergamena
-                pergamena.classList.remove('visible'); // Rimuovi visible nel caso ci fosse
-                pergamena.classList.add('hidden');
+        // FADE OUT DI ENTRAMBI i messaggi introduttivi
+        introMessageTop.classList.add('hidden');
+        introMessageBottom.classList.add('hidden'); 
+        
+        // Aspetta la durata del fade out dei messaggi
+        setTimeout(() => {
+            
+            introMessageTop.style.display = 'none';
+            introMessageBottom.style.display = 'none';
+            
+            // Il resto dell'animazione
+            let animationStep = 0;
+            const animationInterval = setInterval(() => {
+                animationStep++;
+                if (currentFrameIndex + animationStep < frames.length) {
+                    pergamena.src = frames[currentFrameIndex + animationStep];
+                } else {
+                    clearInterval(animationInterval);
+                    currentFrameIndex = frames.length - 1;
 
-                // 2. Attendi la durata del fade out, poi fai apparire la nuova immagine
-                setTimeout(() => {
-                    pergamena.style.display = 'none'; // Rimuovi completamente la pergamena dopo il fade
-                    immagineFinale.classList.remove('hidden');
-                    immagineFinale.classList.add('visible'); // Fa apparire l'immagine finale con fade in
+                    // Pausa opzionale di 0.5s su pergamena4
+                    setTimeout(() => {
+                        pergamena.classList.add('hidden');
 
-                    isAnimating = false; // Reset dello stato di animazione
-                }, fadeDuration); // Aspetta che il fade out sia completo
-            }
-        }, 1000); // Velocità di cambio frame (regola come preferisci)
-    });
+                        setTimeout(() => {
+                            pergamena.style.display = 'none';
+                            immagineFinale.classList.remove('hidden');
+                            immagineFinale.classList.add('visible');
 
-    // Assicurati che la pergamena sia visibile all'inizio
+                            isAnimating = false;
+                        }, fadeDuration); // Tempo del fade out
+                    }, 500); // Pausa
+                }
+            }, 1000); 
+        }, fadeDuration); 
+    }
+    
+    // --- MODIFICA CHIAVE ---
+    // Aggiungiamo *entrambi* gli event listener alla nuova funzione
+    pergamena.addEventListener('click', startAnimation);
+    pergamena.addEventListener('touchend', startAnimation); // <-- Aggiunto per il mobile
+
+    // Inizializzazione (invariata)
     pergamena.classList.add('visible'); 
-    immagineFinale.classList.add('hidden'); // E che l'immagine finale sia nascosta
+    immagineFinale.classList.add('hidden');
 });
